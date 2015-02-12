@@ -1,0 +1,28 @@
+{
+  "name": "office-hours",
+  "version": "0.1.0",
+  "ignore": [
+    ".gitignore",
+    ".jshintrc",
+    "package.json",
+    "README.md",
+    "lib",
+    "test",
+    "app",
+    "vendor",
+    "guplfile.coffee",
+    "examples",
+    "require.build.js",
+    "dist/shared"
+  ],
+  "dependencies": {
+    "jquery": "2.x.x",
+    "requirejs": "2.1.5",
+    "moment-timezone": "0.2.1",
+    "strftime": "git@github.com:samsonjs/strftime#v0.8.1",
+    "flight": "1.1.0"
+  },
+  "devDependencies": {
+    "jasmine-flight": "3.0.0"
+  }
+}

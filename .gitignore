@@ -1,0 +1,12 @@
+.DS_Store
+.tmp/**
+.envrc
+*.orig
+*.map
+*~
+node_modules
+app/bower_components
+# Vim
+*.swp
+*.swo
+**/npm-debug.log

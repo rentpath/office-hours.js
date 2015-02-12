@@ -1,0 +1,52 @@
+{
+  "name": "office-hours.js",
+  "version": "0.1.0",
+  "description": "Yeoman generator",
+  "license": "MIT",
+  "repository": "rentpath/office-hours.js",
+  "author": {
+    "name": "RentPath",
+    "email": "",
+    "url": "https://github.com/rentpath/"
+  },
+  "devDependencies": {
+    "coffee-script": "~1.7.0",
+    "del": "^1.1.0",
+    "generator-flight": "~0.8.0",
+    "gulp": "~3.4.0",
+    "gulp-coffee": "^2.2.0",
+    "gulp-compass": "~1.1.8",
+    "gulp-jshint": "~1.5.3",
+    "gulp-karma": "0.0.4",
+    "gulp-livereload": "~0.2.0",
+    "gulp-sourcemaps": "~1.2.0",
+    "gulp-util": "^3.0.1",
+    "karma": "~0.12.0",
+    "karma-chrome-launcher": "~0.1.0",
+    "karma-cli": "~0.0.4",
+    "karma-coffee-preprocessor": "^0.2.1",
+    "karma-firefox-launcher": "~0.1.0",
+    "karma-jasmine": "~0.2.0",
+    "karma-requirejs": "~0.2.1",
+    "node-static": "~0.7.3",
+    "requirejs": "~2.1.11",
+    "tiny-lr": "~0.0.5"
+  },
+  "scripts": {
+    "build": "gulp build",
+    "livereload": "gulp",
+    "start": "static -p 8899 app",
+    "watch": "gulp",
+    "watch:dev": "npm run server > server.log & npm run livereload",
+    "watch:test": "karma start",
+    "test": "karma start --single-run",
+    "clean": "rm -rf app/bower_components node_modules",
+    "prereset": "npm run clean",
+    "reset": "npm install",
+    "postinstall": "bower install",
+    "preversion": "npm run reset && npm test && npm run build"
+  },
+  "dependencies": {
+    "bower": "~1.3.1"
+  }
+}
