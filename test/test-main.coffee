@@ -19,7 +19,7 @@ require.config
     'office-hours': 'app/coffeescript'
     'jquery': 'app/bower_components/jquery/jquery'
     'moment': 'app/bower_components/moment/moment'
-    'moment-timezone': 'app/bower_components/moment-timezone/moment-timezone'
+    'moment-timezone': 'app/bower_components/moment-timezone/builds/moment-timezone-with-data-2010-2020'
     'strftime': 'app/bower_components/strftime/strftime'
   }
 

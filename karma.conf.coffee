@@ -28,7 +28,7 @@ module.exports = (config) ->
       { pattern: "test/spec/**/*_spec.coffee", included: false }
       { pattern: "app/bower_components/flight/**/*.js", included: false }
       { pattern: 'app/bower_components/moment/moment.js', included: false},
-      { pattern: 'app/bower_components/moment-timezone/moment-timezone.js', included: false},
+      { pattern: 'app/bower_components/moment-timezone/builds/moment-timezone-with-data-2010-2020.js', included: false}
       { pattern: 'app/bower_components/strftime/strftime.js', included: false},
 
       "test/test-main.coffee"

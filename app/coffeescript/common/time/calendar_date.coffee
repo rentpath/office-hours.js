@@ -1,7 +1,4 @@
-define [
-], (
-) ->
-
+define [ ], () ->
   # This code comes from https://github.com/basecamp/local_time/blob/master/app/assets/javascripts/local_time.js.coffee
   class CalendarDate
     @fromDate: (date) ->
