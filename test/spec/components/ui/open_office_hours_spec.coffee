@@ -1,8 +1,4 @@
-define [
-  'jquery'
-], (
-  $
-) ->
+define ['jquery'], ($) ->
 
   describeComponent 'office-hours/components/ui/open_office_hours', ->
     beforeEach ->

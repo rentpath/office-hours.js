@@ -1,5 +1,8 @@
 define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], function($, defineComponent, Moment) {
   return defineComponent(function() {
+    this.defaultAttrs({
+      timezoneSuffix: true
+    });
     this._timezoneFullNameToAbbrev = function(timezoneId) {
       return Moment().tz(timezoneId).format('z');
     };
@@ -26,6 +29,9 @@ define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], functi
     };
     this._timezoneMessage = function(listingTimezoneId, browserTZ) {
       var listingTZ;
+      if (!this.attr.timezoneSuffix) {
+        return '';
+      }
       listingTZ = this._timezoneFullNameToAbbrev(listingTimezoneId);
       if (browserTZ === listingTZ) {
         return '';

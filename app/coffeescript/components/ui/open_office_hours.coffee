@@ -11,6 +11,9 @@ define [
 
   defineComponent ->
 
+    @defaultAttrs
+      timezoneSuffix: true
+
     @_timezoneFullNameToAbbrev = (timezoneId) ->
       Moment().tz(timezoneId).format('z')
 
@@ -35,6 +38,7 @@ define [
       (localHour < localOpeningHour) or (localHour >= localClosingHour)
 
     @_timezoneMessage = (listingTimezoneId, browserTZ) ->
+      return '' unless @attr.timezoneSuffix
       listingTZ = @_timezoneFullNameToAbbrev(listingTimezoneId)
 
       if (browserTZ == listingTZ)

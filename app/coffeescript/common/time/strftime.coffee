@@ -1,7 +1,4 @@
-define [
-], (
-) ->
-
+define [ ], () ->
   # This code comes from https://github.com/basecamp/local_time/blob/master/app/assets/javascripts/local_time.js.coffee
   weekdays = "Sunday Monday Tuesday Wednesday Thursday Friday Saturday".split " "
   months   = "January February March April May June July August September October November December".split " "
