@@ -1,6 +1,6 @@
 define [
-  'common/time/calendar_date'
-  'common/time/strftime'
+  'office-hours/common/time/calendar_date'
+  'office-hours/common/time/strftime'
 ], (
   CalendarDate
   strftime

@@ -1,4 +1,4 @@
-define(['common/time/calendar_date', 'common/time/strftime'], function(CalendarDate, strftime) {
+define(['office-hours/common/time/calendar_date', 'office-hours/common/time/strftime'], function(CalendarDate, strftime) {
   var RelativeTime;
   RelativeTime = (function() {
     function RelativeTime(_at_date) {
