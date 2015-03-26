@@ -45,7 +45,7 @@ define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], functi
       return hour.replace(/0([1-9]):/, "$1" + ':').replace(/:00 ?/, '').toLowerCase();
     };
     this._officeOpenMessage = function(closingHour, suffix) {
-      return (this.attr.officeOpenMessageTemplate.replace(/{closingHour}/, closingHour)) + " " + suffix;
+      return "" + (this.attr.officeOpenMessageTemplate.replace(/{closingHour}/, closingHour)) + suffix;
     };
     this._officeAvailabilityMessage = function() {
       var browser, closingHour, listingTimezone, messageSuffix, openingHour;

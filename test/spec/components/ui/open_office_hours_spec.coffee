@@ -3,8 +3,7 @@ define ['jquery'], ($) ->
   describeComponent 'office-hours/components/ui/open_office_hours', ->
     describe 'initialize with defaultAttrs', ->
       beforeEach ->
-        @fixture = readFixtures('open_office_hours.html')
-        @setupComponent(@fixture)
+        @setupComponent()
 
       describe '#_officeClosed', ->
         describe 'in the same timezone', ->
@@ -45,6 +44,7 @@ define ['jquery'], ($) ->
           it 'matches when it is not closed', ->
             withoutSpace = @component._officeClosed('09:00AM', '05:00PM', '10', -(5 * 3600), -5)
             withSpace = @component._officeClosed('09:00 AM', '05:00 PM', '10', -(5 * 3600), -5)
+
             expect(withoutSpace).toEqual(withSpace)
 
       describe '#_calcUtcDiff', ->
@@ -62,6 +62,7 @@ define ['jquery'], ($) ->
           # For testing, use a non-DST timezone make this spec less flaky
           listingTimezoneId = 'America/Phoenix'
           browserTZ = 'MST'
+
           expect(@component._timezoneMessage(listingTimezoneId, browserTZ)).toEqual('')
 
       describe '#_timezoneFullNameToAbbrev', ->
@@ -70,6 +71,9 @@ define ['jquery'], ($) ->
 
       # Integration tests -- variations of dst/times should be accounted for above
       describe "#showTimezone", ->
+        beforeEach ->
+          @fixture = readFixtures('open_office_hours.html')
+
         it "is empty when there is no office hour data", ->
           fixture = readFixtures('current_office_availability_without_data.html')
           @setupComponent(fixture)
@@ -79,24 +83,25 @@ define ['jquery'], ($) ->
         it "returns the office hours message without timezone when the listing tz offset is missing", ->
           fixture = readFixtures('current_office_availability_without_tz_offset.html')
           @setupComponent(fixture)
-          expect($('.current-office-availability').text()).toMatch(/^Office open until 6pm today $/)
+
+          expect($('.current-office-availability').text()).toMatch(/^Office open until 6pm today$/)
 
         it "returns the message or closed (depending on when the specs are run)", ->
+          @setupComponent(@fixture)
           expect($('.current-office-availability').text()).toMatch(/^Office open until|Office closed/)
 
         it "returns the office is closed message when closed hours are N/A", ->
           @setupComponent(@fixture.replace(/06:00PM/, "N/A"))
-
           expect($('.current-office-availability').text()).toEqual('')
 
         it "returns the office is closed message when open hours are N/A", ->
           @setupComponent(@fixture.replace(/09:00AM/, "N/A"))
-
           expect($('.current-office-availability').text()).toEqual('')
 
         it "returns an office closed message", ->
           fixture = readFixtures('closed_office_availability.html')
           @setupComponent(fixture)
+
           expect($('.current-office-availability').text()).toEqual('Office closed. Leave a message.')
 
     describe 'initialize with custom defaultAttrs', ->
@@ -104,10 +109,12 @@ define ['jquery'], ($) ->
         it "returns a custom office open message", ->
           fixture = readFixtures('current_office_availability_without_tz_offset.html')
           @setupComponent(fixture, { 'officeOpenMessageTemplate': 'Happy hour after {closingHour} today!!' })
-          expect($('.current-office-availability').text()).toMatch(/^Happy hour after 6pm today!! $/)
+
+          expect($('.current-office-availability').text()).toMatch(/^Happy hour after 6pm today!!$/)
 
         it "returns a custom office closed message", ->
           fixture = readFixtures('closed_office_availability.html')
           @setupComponent(fixture, { 'officeClosedMessageTemplate': 'Happy hour all day!!' })
+
           expect($('.current-office-availability').text()).toMatch(/^Happy hour all day!!$/)
 

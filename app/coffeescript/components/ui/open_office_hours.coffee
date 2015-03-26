@@ -53,7 +53,7 @@ define [
       hour.replace(/0([1-9]):/,"$1" + ':').replace(/:00 ?/,'').toLowerCase()
 
     @_officeOpenMessage = (closingHour, suffix) ->
-      "#{@attr.officeOpenMessageTemplate.replace(/{closingHour}/, closingHour)} #{suffix}"
+      "#{@attr.officeOpenMessageTemplate.replace(/{closingHour}/, closingHour)}#{suffix}"
 
     @_officeAvailabilityMessage = ->
       closingHour = @$node.attr('data-office-closing-hour')
