@@ -13,6 +13,8 @@ define [
 
     @defaultAttrs
       timezoneSuffix: true
+      officeOpenMessageTemplate: 'Office open until {closingHour} today'
+      officeClosedMessageTemplate: 'Office closed. Leave a message.'
 
     @_timezoneFullNameToAbbrev = (timezoneId) ->
       Moment().tz(timezoneId).format('z')
@@ -51,7 +53,7 @@ define [
       hour.replace(/0([1-9]):/,"$1" + ':').replace(/:00 ?/,'').toLowerCase()
 
     @_officeOpenMessage = (closingHour, suffix) ->
-      "Office open until #{closingHour} today#{suffix}"
+      "#{@attr.officeOpenMessageTemplate.replace(/{closingHour}/, closingHour)} #{suffix}"
 
     @_officeAvailabilityMessage = ->
       closingHour = @$node.attr('data-office-closing-hour')
@@ -73,7 +75,7 @@ define [
         @_officeOpenMessage(closingHour, '')
 
       else if @_officeClosed(openingHour, closingHour, browser.hour, listingTimezone.offset, browser.timezone)
-        'Office closed. Leave a message.'
+        @attr.officeClosedMessageTemplate
 
       else
         messageSuffix = @_timezoneMessage(listingTimezone.timezoneId, strftime('%Z'))

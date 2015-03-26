@@ -1,7 +1,7 @@
 {
   "name": "office-hours.js",
-  "version": "0.1.0",
-  "description": "Yeoman generator",
+  "version": "0.2.0",
+  "description": "Shared code for displaying office hours info.",
   "license": "MIT",
   "repository": "rentpath/office-hours.js",
   "author": {
