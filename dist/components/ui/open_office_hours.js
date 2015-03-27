@@ -1,7 +1,9 @@
 define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], function($, defineComponent, Moment) {
   return defineComponent(function() {
     this.defaultAttrs({
-      timezoneSuffix: true
+      timezoneSuffix: true,
+      officeOpenMessageTemplate: 'Office open until {closingHour} today',
+      officeClosedMessageTemplate: 'Office closed. Leave a message.'
     });
     this._timezoneFullNameToAbbrev = function(timezoneId) {
       return Moment().tz(timezoneId).format('z');
@@ -43,7 +45,7 @@ define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], functi
       return hour.replace(/0([1-9]):/, "$1" + ':').replace(/:00 ?/, '').toLowerCase();
     };
     this._officeOpenMessage = function(closingHour, suffix) {
-      return "Office open until " + closingHour + " today" + suffix;
+      return "" + (this.attr.officeOpenMessageTemplate.replace(/{closingHour}/, closingHour)) + suffix;
     };
     this._officeAvailabilityMessage = function() {
       var browser, closingHour, listingTimezone, messageSuffix, openingHour;
@@ -63,7 +65,7 @@ define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], functi
         closingHour = this._formatHour(closingHour);
         return this._officeOpenMessage(closingHour, '');
       } else if (this._officeClosed(openingHour, closingHour, browser.hour, listingTimezone.offset, browser.timezone)) {
-        return 'Office closed. Leave a message.';
+        return this.attr.officeClosedMessageTemplate;
       } else {
         messageSuffix = this._timezoneMessage(listingTimezone.timezoneId, strftime('%Z'));
         closingHour = this._formatHour(closingHour);
