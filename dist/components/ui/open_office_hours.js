@@ -24,8 +24,9 @@ define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], functi
       localHour += localMinute / 60;
       return localHour;
     };
-    this._officeClosed = function(openingHour, closingHour, localHour, listingUtcOffsetInHours, browserUtcOffset) {
+    this._officeClosed = function(openingHour, closingHour, localHour, localMinute, listingUtcOffsetInHours, browserUtcOffset) {
       var localClosingHour, localOpeningHour;
+      localHour = parseInt(localHour, 10) + (parseInt(localMinute, 10) / 60);
       localOpeningHour = this._calcFromHour(openingHour, listingUtcOffsetInHours, browserUtcOffset);
       localClosingHour = this._calcFromHour(closingHour, listingUtcOffsetInHours, browserUtcOffset);
       return (localHour < localOpeningHour) || (localHour >= localClosingHour);
@@ -58,6 +59,7 @@ define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], functi
       };
       browser = {
         hour: strftime('%H'),
+        minute: strftime('%M'),
         timezone: strftime('%z').slice(0, 3)
       };
       if ((closingHour === void 0) || (openingHour === 'N/A') || (closingHour === 'N/A')) {
@@ -65,7 +67,7 @@ define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], functi
       } else if (listingTimezone.offset === '_MISSING_DATA_') {
         closingHour = this._formatHour(closingHour);
         return this._officeOpenMessage(closingHour, '');
-      } else if (this._officeClosed(openingHour, closingHour, browser.hour, listingTimezone.offset, browser.timezone)) {
+      } else if (this._officeClosed(openingHour, closingHour, browser.hour, browser.minute, listingTimezone.offset, browser.timezone)) {
         return this.attr.officeClosedMessageTemplate;
       } else {
         messageSuffix = this._timezoneMessage(listingTimezone.timezoneId, strftime('%Z'));

@@ -34,7 +34,9 @@ define [
 
       localHour
 
-    @_officeClosed = (openingHour, closingHour, localHour, listingUtcOffsetInHours, browserUtcOffset) ->
+    @_officeClosed = (openingHour, closingHour, localHour, localMinute, listingUtcOffsetInHours, browserUtcOffset) ->
+      localHour = parseInt(localHour, 10) + (parseInt(localMinute, 10) / 60)
+
       localOpeningHour = @_calcFromHour(openingHour, listingUtcOffsetInHours, browserUtcOffset)
       localClosingHour = @_calcFromHour(closingHour, listingUtcOffsetInHours, browserUtcOffset)
 
@@ -66,6 +68,7 @@ define [
 
       browser =
         hour:     strftime('%H')
+        minute:   strftime('%M')
         timezone: strftime('%z')[0..2]
 
       if (closingHour == undefined) or (openingHour == 'N/A') or (closingHour == 'N/A')
@@ -75,7 +78,7 @@ define [
         closingHour = @_formatHour(closingHour)
         @_officeOpenMessage(closingHour, '')
 
-      else if @_officeClosed(openingHour, closingHour, browser.hour, listingTimezone.offset, browser.timezone)
+      else if @_officeClosed(openingHour, closingHour, browser.hour, browser.minute, listingTimezone.offset, browser.timezone)
         @attr.officeClosedMessageTemplate
 
       else
