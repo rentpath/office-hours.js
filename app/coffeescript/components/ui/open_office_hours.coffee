@@ -23,15 +23,16 @@ define [
       listingUtcOffset = listingUtcOffsetInHours / 3600
       browserUtcOffset - listingUtcOffset
 
-    # Note: Handles whole hours (e.g. 9:00 - 5:00) and not partials (e.g. 9:30 - 5:30)
-    @_calcFromHour = (hour, listingUtcOffsetInHours, browserUtcOffset) ->
-      localHour = parseInt(hour.split(':')[0], 10) + @_calcUtcDiff(listingUtcOffsetInHours, browserUtcOffset)
-      isPM = hour.match(/PM$/)
+    @_calcFromHour = (hourString, listingUtcOffsetInHours, browserUtcOffset) ->
+      [hours, minutes] = hourString.split(':')
+      localHour = parseInt(hours, 10) + @_calcUtcDiff(listingUtcOffsetInHours, browserUtcOffset)
 
-      if isPM
-        localHour += 12
-      else
-        localHour
+      localHour += 12 if hourString.match(/PM$/)
+
+      localMinute = parseInt(minutes, 10) or 0
+      localHour += localMinute / 60
+
+      localHour
 
     @_officeClosed = (openingHour, closingHour, localHour, listingUtcOffsetInHours, browserUtcOffset) ->
       localOpeningHour = @_calcFromHour(openingHour, listingUtcOffsetInHours, browserUtcOffset)
