@@ -13,15 +13,16 @@ define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], functi
       listingUtcOffset = listingUtcOffsetInHours / 3600;
       return browserUtcOffset - listingUtcOffset;
     };
-    this._calcFromHour = function(hour, listingUtcOffsetInHours, browserUtcOffset) {
-      var isPM, localHour;
-      localHour = parseInt(hour.split(':')[0], 10) + this._calcUtcDiff(listingUtcOffsetInHours, browserUtcOffset);
-      isPM = hour.match(/PM$/);
-      if (isPM) {
-        return localHour += 12;
-      } else {
-        return localHour;
+    this._calcFromHour = function(hourString, listingUtcOffsetInHours, browserUtcOffset) {
+      var hours, localHour, localMinute, minutes, _ref;
+      _ref = hourString.split(':'), hours = _ref[0], minutes = _ref[1];
+      localHour = parseInt(hours, 10) + this._calcUtcDiff(listingUtcOffsetInHours, browserUtcOffset);
+      if (hourString.match(/PM$/)) {
+        localHour += 12;
       }
+      localMinute = parseInt(minutes, 10) || 0;
+      localHour += localMinute / 60;
+      return localHour;
     };
     this._officeClosed = function(openingHour, closingHour, localHour, listingUtcOffsetInHours, browserUtcOffset) {
       var localClosingHour, localOpeningHour;
