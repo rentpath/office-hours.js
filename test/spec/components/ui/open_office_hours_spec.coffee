@@ -8,50 +8,54 @@ define ['jquery'], ($) ->
       describe '#_officeClosed', ->
         describe 'in the same timezone', ->
           it 'is not closed when browser time is within the local hour', ->
-            result = @component._officeClosed('09:00AM', '05:00PM', '10', -(5 * 3600), -5)
+            result = @component._officeClosed('09:00AM', '05:00PM', '10', 0, -(5 * 3600), -5)
             expect(result).toEqual(false)
 
           it 'is not closed when browser time exactly the opening hour', ->
-            result = @component._officeClosed('09:00AM', '05:00PM', '09', -(5 * 3600), -5)
+            result = @component._officeClosed('09:00AM', '05:00PM', '09', 0, -(5 * 3600), -5)
             expect(result).toEqual(false)
 
           it 'is closed when browser time is not within the local hour', ->
-            result = @component._officeClosed('09:00AM', '05:00PM', '19', -(5 * 3600), -5)
+            result = @component._officeClosed('09:00AM', '05:00PM', '19', 0, -(5 * 3600), -5)
             expect(result).toEqual(true)
 
           it 'is closed when browser time is exactly the closing hour', ->
-            result = @component._officeClosed('09:00AM', '05:00PM', '17', -(5 * 3600), -5)
+            result = @component._officeClosed('09:00AM', '05:00PM', '17', 0, -(5 * 3600), -5)
             expect(result).toEqual(true)
 
           it 'is not closed when browser time is within the local :30 hour', ->
-            result = @component._officeClosed('09:00AM', '05:30PM', '17', -(5 * 3600), -5)
+            result = @component._officeClosed('09:00AM', '05:30PM', '17', 0, -(5 * 3600), -5)
             expect(result).toEqual(false)
+
+          it 'is closed when 5 minutes past a local :30 hour', ->
+            result = @component._officeClosed('09:00AM', '05:30PM', '17', 35, -(5 * 3600), -5)
+            expect(result).toEqual(true)
 
         describe 'not in the same timezone', ->
           it 'is not closed when browser time is within the local hour', ->
-            result = @component._officeClosed('09:00AM', '05:00PM', '17', -(5 * 3600), -4)
+            result = @component._officeClosed('09:00AM', '05:00PM', '17', 0, -(5 * 3600), -4)
             expect(result).toEqual(false)
 
           it 'is not closed when browser time is within the local :30 hour', ->
-            result = @component._officeClosed('09:00AM', '05:30PM', '17', -(5 * 3600), -4)
+            result = @component._officeClosed('09:00AM', '05:30PM', '17', 0, -(5 * 3600), -4)
             expect(result).toEqual(false)
 
           it 'is not closed when browser time exactly the opening hour', ->
-            result = @component._officeClosed('09:00AM', '05:00PM', '10', -(5 * 3600), -4)
+            result = @component._officeClosed('09:00AM', '05:00PM', '10', 0, -(5 * 3600), -4)
             expect(result).toEqual(false)
 
           it 'is closed when browser time is not within the local hour', ->
-            result = @component._officeClosed('09:00AM', '05:00PM', '09', -(5 * 3600), -4)
+            result = @component._officeClosed('09:00AM', '05:00PM', '09', 0, -(5 * 3600), -4)
             expect(result).toEqual(true)
 
           it 'is closed when browser time is exactly the closing hour', ->
-            result = @component._officeClosed('09:00AM', '05:00PM', '18', -(5 * 3600), -4)
+            result = @component._officeClosed('09:00AM', '05:00PM', '18', 0, -(5 * 3600), -4)
             expect(result).toEqual(true)
 
         describe 'without a space before AM/PM', ->
           it 'matches when it is not closed', ->
-            withoutSpace = @component._officeClosed('09:00AM', '05:00PM', '10', -(5 * 3600), -5)
-            withSpace = @component._officeClosed('09:00 AM', '05:00 PM', '10', -(5 * 3600), -5)
+            withoutSpace = @component._officeClosed('09:00AM', '05:00PM', '10', 0, -(5 * 3600), -5)
+            withSpace = @component._officeClosed('09:00 AM', '05:00 PM', '10', 0, -(5 * 3600), -5)
 
             expect(withoutSpace).toEqual(withSpace)
 
