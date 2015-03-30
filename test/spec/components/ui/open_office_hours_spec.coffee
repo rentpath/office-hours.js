@@ -23,9 +23,17 @@ define ['jquery'], ($) ->
             result = @component._officeClosed('09:00AM', '05:00PM', '17', -(5 * 3600), -5)
             expect(result).toEqual(true)
 
+          it 'is not closed when browser time is within the local :30 hour', ->
+            result = @component._officeClosed('09:00AM', '05:30PM', '17', -(5 * 3600), -5)
+            expect(result).toEqual(false)
+
         describe 'not in the same timezone', ->
           it 'is not closed when browser time is within the local hour', ->
             result = @component._officeClosed('09:00AM', '05:00PM', '17', -(5 * 3600), -4)
+            expect(result).toEqual(false)
+
+          it 'is not closed when browser time is within the local :30 hour', ->
+            result = @component._officeClosed('09:00AM', '05:30PM', '17', -(5 * 3600), -4)
             expect(result).toEqual(false)
 
           it 'is not closed when browser time exactly the opening hour', ->
@@ -46,6 +54,23 @@ define ['jquery'], ($) ->
             withSpace = @component._officeClosed('09:00 AM', '05:00 PM', '10', -(5 * 3600), -5)
 
             expect(withoutSpace).toEqual(withSpace)
+
+      describe '#_calcFromHour', ->
+        it 'returns the hours in the AM', ->
+          hour = @component._calcFromHour '09:00 AM', -(5 * 3600), -5
+          expect(hour).toEqual 9
+
+        it 'returns the hours in the PM', ->
+          hour = @component._calcFromHour '05:00 PM', -(5 * 3600), -5
+          expect(hour).toEqual 17
+
+        it 'adds minutes as decimals', ->
+          hour = @component._calcFromHour '05:30 PM', -(5 * 3600), -5
+          expect(hour).toEqual 17.5
+
+        it 'adds minutes as decimals in the AM', ->
+          hour = @component._calcFromHour '08:30 AM', -(5 * 3600), -5
+          expect(hour).toEqual 8.5
 
       describe '#_calcUtcDiff', ->
         it 'converts minutes and returns the diff', ->
