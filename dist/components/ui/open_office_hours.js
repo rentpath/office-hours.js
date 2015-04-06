@@ -1,8 +1,7 @@
 define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], function($, defineComponent, Moment) {
   return defineComponent(function() {
     this.defaultAttrs({
-      timezoneSuffix: true,
-      officeOpenMessageTemplate: 'Office open until {closingHour} today',
+      officeOpenMessageTemplate: 'Office open until {closingHour} today {timezone}',
       officeClosedMessageTemplate: 'Office closed. Leave a message.'
     });
     this._timezoneFullNameToAbbrev = function(timezoneId) {
@@ -33,24 +32,21 @@ define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], functi
     };
     this._timezoneMessage = function(listingTimezoneId, browserTZ) {
       var listingTZ;
-      if (!this.attr.timezoneSuffix) {
-        return '';
-      }
       listingTZ = this._timezoneFullNameToAbbrev(listingTimezoneId);
       if (browserTZ === listingTZ) {
         return '';
       } else {
-        return " (" + listingTZ + ")";
+        return "(" + listingTZ + ")";
       }
     };
     this._formatHour = function(hour) {
       return hour.replace(/0([1-9]):/, "$1" + ':').replace(/:00 ?/, '').toLowerCase();
     };
-    this._officeOpenMessage = function(closingHour, suffix) {
-      return "" + (this.attr.officeOpenMessageTemplate.replace(/{closingHour}/, closingHour)) + suffix;
+    this._officeOpenMessage = function(closingHour, timezone) {
+      return this.attr.officeOpenMessageTemplate.replace(/{closingHour}/, closingHour).replace(/{timezone}/, timezone).replace(/\s+$/g, '');
     };
     this._officeAvailabilityMessage = function() {
-      var browser, closingHour, listingTimezone, messageSuffix, openingHour;
+      var browser, closingHour, listingTimezone, openingHour, timezoneMessage;
       closingHour = this.$node.attr('data-office-closing-hour');
       openingHour = this.$node.attr('data-office-opening-hour');
       listingTimezone = {
@@ -70,9 +66,9 @@ define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], functi
       } else if (this._officeClosed(openingHour, closingHour, browser.hour, browser.minute, listingTimezone.offset, browser.timezone)) {
         return this.attr.officeClosedMessageTemplate;
       } else {
-        messageSuffix = this._timezoneMessage(listingTimezone.timezoneId, strftime('%Z'));
+        timezoneMessage = this._timezoneMessage(listingTimezone.timezoneId, strftime('%Z'));
         closingHour = this._formatHour(closingHour);
-        return this._officeOpenMessage(closingHour, messageSuffix);
+        return this._officeOpenMessage(closingHour, timezoneMessage);
       }
     };
     this.showTimezone = function() {
