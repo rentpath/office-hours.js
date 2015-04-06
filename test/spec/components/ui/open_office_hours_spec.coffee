@@ -85,7 +85,7 @@ define ['jquery'], ($) ->
           listingTimezoneId = 'America/Chicago'
           browserTZ = 'EDT'
 
-          expect(@component._timezoneMessage(listingTimezoneId, browserTZ)).toMatch(/\ \(CDT|CST\)/)
+          expect(@component._timezoneMessage(listingTimezoneId, browserTZ)).toMatch(/\(CDT|CST\)/)
 
         it 'is blank when they are the same', ->
           # For testing, use a non-DST timezone make this spec less flaky
@@ -135,6 +135,16 @@ define ['jquery'], ($) ->
 
     describe 'initialize with custom defaultAttrs', ->
       describe "#_officeOpenMessage", ->
+        it 'replaces the closing hour and timezone', ->
+          @setupComponent()
+          message = @component._officeOpenMessage '5pm', '(EDT)'
+          expect(message).toEqual 'Office open until 5pm today (EDT)'
+
+        it 'does not add a trailing space without a timezone', ->
+          @setupComponent()
+          message = @component._officeOpenMessage '5pm', ''
+          expect(message).toEqual 'Office open until 5pm today'
+
         it "returns a custom office open message", ->
           fixture = readFixtures('current_office_availability_without_tz_offset.html')
           @setupComponent(fixture, { 'officeOpenMessageTemplate': 'Happy hour after {closingHour} today!!' })
