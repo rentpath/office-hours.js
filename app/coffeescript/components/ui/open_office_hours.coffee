@@ -12,8 +12,7 @@ define [
   defineComponent ->
 
     @defaultAttrs
-      timezoneSuffix: true
-      officeOpenMessageTemplate: 'Office open until {closingHour} today'
+      officeOpenMessageTemplate: 'Office open until {closingHour} today {timezone}'
       officeClosedMessageTemplate: 'Office closed. Leave a message.'
 
     @_timezoneFullNameToAbbrev = (timezoneId) ->
@@ -43,20 +42,22 @@ define [
       (localHour < localOpeningHour) or (localHour >= localClosingHour)
 
     @_timezoneMessage = (listingTimezoneId, browserTZ) ->
-      return '' unless @attr.timezoneSuffix
       listingTZ = @_timezoneFullNameToAbbrev(listingTimezoneId)
 
       if (browserTZ == listingTZ)
         ''
       else
-        " (#{listingTZ})"
+        "(#{listingTZ})"
 
     # EG(05:00PM -> 5pm, 05:30PM -> 5:30pm, 05:00 PM -> 5pm)
     @_formatHour = (hour) ->
       hour.replace(/0([1-9]):/,"$1" + ':').replace(/:00 ?/,'').toLowerCase()
 
-    @_officeOpenMessage = (closingHour, suffix) ->
-      "#{@attr.officeOpenMessageTemplate.replace(/{closingHour}/, closingHour)}#{suffix}"
+    @_officeOpenMessage = (closingHour, timezone) ->
+      @attr.officeOpenMessageTemplate
+        .replace /{closingHour}/, closingHour
+        .replace /{timezone}/, timezone
+        .replace /\s+$/g, '' # trim trailing whitespace
 
     @_officeAvailabilityMessage = ->
       closingHour = @$node.attr('data-office-closing-hour')
@@ -82,9 +83,9 @@ define [
         @attr.officeClosedMessageTemplate
 
       else
-        messageSuffix = @_timezoneMessage(listingTimezone.timezoneId, strftime('%Z'))
+        timezoneMessage = @_timezoneMessage(listingTimezone.timezoneId, strftime('%Z'))
         closingHour = @_formatHour(closingHour)
-        @_officeOpenMessage(closingHour, messageSuffix)
+        @_officeOpenMessage(closingHour, timezoneMessage)
 
     @showTimezone = ->
       @$node.text(@_officeAvailabilityMessage())
