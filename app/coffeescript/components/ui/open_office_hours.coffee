@@ -26,7 +26,7 @@ define [
       [hours, minutes] = hourString.split(':')
       localHour = parseInt(hours, 10) + @_calcUtcDiff(listingUtcOffsetInHours, browserUtcOffset)
 
-      localHour += 12 if hourString.match(/PM$/)
+      localHour += 12 if hourString.match(/PM$/) && hours != '12'
 
       localMinute = parseInt(minutes, 10) or 0
       localHour += localMinute / 60

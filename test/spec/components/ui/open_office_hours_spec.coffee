@@ -76,6 +76,10 @@ define ['jquery'], ($) ->
           hour = @component._calcFromHour '08:30 AM', -(5 * 3600), -5
           expect(hour).toEqual 8.5
 
+        it 'does not add hours during noon hour', ->
+          hour = @component._calcFromHour '12:30 PM', -(5 * 3600), -5
+          expect(hour).toEqual 12.5
+
       describe '#_calcUtcDiff', ->
         it 'converts minutes and returns the diff', ->
           expect(@component._calcUtcDiff(-(5 * 3600), -4)).toEqual(1)
