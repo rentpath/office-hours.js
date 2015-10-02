@@ -16,7 +16,7 @@ define(['jquery', 'flight/lib/component', 'moment-timezone', 'strftime'], functi
       var hours, localHour, localMinute, minutes, _ref;
       _ref = hourString.split(':'), hours = _ref[0], minutes = _ref[1];
       localHour = parseInt(hours, 10) + this._calcUtcDiff(listingUtcOffsetInHours, browserUtcOffset);
-      if (hourString.match(/PM$/)) {
+      if (hourString.match(/PM$/) && hours !== '12') {
         localHour += 12;
       }
       localMinute = parseInt(minutes, 10) || 0;

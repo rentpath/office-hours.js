@@ -1,6 +1,6 @@
 {
   "name": "office-hours",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "ignore": [
     ".gitignore",
     ".jshintrc",
